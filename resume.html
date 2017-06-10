@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html class="zx-yl-box">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<title>我的简历-20170427</title>
+		<link rel="stylesheet" href="http://static.500d.me/resources/500d/editresume/css/bootstrap.min.css?v=4092" />
+		<link rel="stylesheet" href="http://static.500d.me/resources/500d/css/layer.css?v=4092"/>
+		<script type="text/javascript" src="http://static.500d.me/resources/500d/js/jquery-1.8.0.js"></script>
+		<script src="http://static.500d.me/resources/500d/js/common.js?v=4000" type="text/javascript"></script>
+		<script src="/resources/500d/js/utils.js?v=4000" type="text/javascript"></script>
+		<script src="http://static.500d.me/resources/500d/js/zclip/jquery.zclip.min.js" type="text/javascript"></script>
+		<script type="text/javascript" src="http://static.500d.me/resources/500d/editresume/modal.js" ></script>
+		<script type="text/javascript" src="http://static.500d.me/resources/500d/js/layer.js?v=4000"></script>
+		<link rel="stylesheet" href="http://static.500d.me/resources/500d/editresume/css/base.css?v=4092" />
+		<link rel="stylesheet" href="http://static.500d.me/resources/500d/createresume/css/base.css?v=4092" />
+		<link rel="stylesheet" href="http://static.500d.me/resources/500d/createresume/css/theme.css?v=4092" />
+		<link rel="stylesheet" href="http://static.500d.me/resources/500d/createresume/css/edit.css?v=4092" />
+		<script src="http://static.500d.me/resources/500d/createresume/js/export.js?v=4000" type="text/javascript"></script>
+	</head>
+	<style>
+	span.resume_drag_delete{
+		display: none !important;
+	}
+	/*自定义文本添加*/
+	.text-draggable{position: absolute;top: 0px;right: 0px;z-index: 10;}
+	</style>
+	<body>
+	<div class="zx-loading" style="display:none"></div>
+	<!--简历转换提示框-->
+	<div class="modal fade promptModal" id="changeModal" >
+		<div class="modal-dialog">
+			<div class="modal-content clearfix">
+				<div class="left"><img src="http://static.500d.me/resources/500d/editresume/images/zxbj/error.png"/></div>
+				<div class="right text">
+					<p>主公，文档简历转换成手机简历可能有部分格<br/>式错乱，请知悉</p>
+					<div class="mbtn"><button type="submit" data-dismiss="modal" aria-hidden="true">取消</button><button class="reset" id="cofr_change_Btn" type="reset">生成</button></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--弹框-->	
+	<div class="modal tdModal" id="tdModal" >
+		<div class="modal-dialog">
+			<div class="modal-content clearfix">
+				<h2>投递简历</h2>
+					<div class="link linkcopyBtn">
+						<span>http://www.500d.me/resume/1978045783/</span>
+						<a href="javascript:;" id="copyBtn">复制</a>
+					</div>
+				<p>使用网页版简历，效率更高，赶快复制上面的链接发送给HR吧</p>
+			</div>
+		</div>		
+	</div>	
+	<!--简历设置提示框   -->
+	<div class="modal fade setResumeModal" id="setResumeModal" >
+		<div class="modal-dialog">
+			<div class="modal-content clearfix">
+				<ul>
+					<li>
+						<h2 class="mc">简历名称</h2>
+						<input type="text" class="mc-input" id="webresumeTitle"  value="我的简历-20170427" />
+					</li>
+					<li>
+						<h2 class="ym">个性简历域名</h2>
+						<span class="ym-span">http://www.500d.me/resume/<input type="text" class="ym-input " id="visitid" value="1978045783"  />/</span>
+						<p>使用网页版简历，效率更高，赶快复制上面的链接发送给HR吧</p>
+					</li>
+					<li>
+						<h2 class="ys">隐私设置</h2>
+						<div class="fradio">
+							<input type="radio" name="visitType" value="open"  checked/><label>开放查看</label>
+							<span>外部人士通过个性域名可查看简历内容，适合正在找工作时的状态</span>
+						</div>
+						<div class="fradio">
+							<input type="radio" name="visitType" value="privary" /><label>不开放</label>
+							<span>如果您暂时不需要使用网页版简历，可以将简历状态设为不开放</span>
+						</div>
+					</li>
+				</ul>
+				<button class="dBtn" id="privarySumBtn">确定</button>
+			</div>
+		</div>
+	</div>			
+	<!--邮件投递-->
+<!--简历投递-->
+<div class="modal fade tdResumeModal" id="tdResumeModal" >
+	<div class="modal-dialog">
+		<div class="modal-content clearfix">
+			<div class="hd"><h3>亲爱的用户，你好</h3><p>我们新做了一个小功能，你可以在这把做好的简历一键直投<br/>到HR的邮箱，省去在电脑上很多繁琐的操作，希望你会喜欢。</p></div>
+			<div class="bd clearfix">
+				<form action="/webresume/resumeMailing/" id="resumeMailingFrom">
+					<input type="hidden" name="resumemailing_resumeId" id="resumemailing_resumeId" value="2002735"/>
+					<div class="form-div"><label>发件人姓名：  </label><input type="text" name="sendeeName" placeholder="例如：张三" maxlength="10"/></div>
+					<div class="form-div"><label>发件人邮箱：  </label><input type="text" name="replyMail" placeholder="例如：dingding@500d.me" maxlength="200"/></div>
+					<div class="form-div"><label>收件人邮箱：  </label><input type="text" name="sendeeEmail" placeholder="例如：hr@500d.me" maxlength="50"/></div>
+					<div class="form-div"><label>邮件主题：     </label><input type="text" name="emailTitle" placeholder="应聘产品策划-张三-5年工作经验" maxlength="50"/></div>
+					<div contenteditable="true" id="emailContent">
+						<div>五百丁招聘官，你好！</div><br/>
+						<div>我是应聘贵公司产品岗的求职者张三，</div>
+						<div>我曾经主导过一个具有百万用户级别的产品策划，</div>
+						<div>我有信心为贵公司产品带来一个质的提升，希望能有机会面谈。</div>
+						<div><br></div>
+						<div>下面的链接是我的简历，请打开查看我的详细资料，非常感谢。</div>
+					</div>
+					<div class="form-btn"><a class="yl tdylBtn 500dtongji" data_track="在线制作-编辑页左侧④-预览按钮" data_sid="40">预览</a><a class="td tdcgBtn 500dtongji" data_track="在线制作-编辑页左侧④-投递按钮"  id="resumeMailingBtn" data_sid="41">投递</a></div>
+				<textarea style="display: none;" name="emailContent"></textarea>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>	
+<!--简历投递预览-->
+<div class="modal fade tdylResumeModal" id="tdylResumeModal" >
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="hd">
+				<h3 class="sendPreviewTitle">丁丁的求职简历</h3>
+				<p class="sj">发件人：<span class="sendPreviewFjr">丁丁<dingding@500d.me></span></p>
+				<p class="fj">收件人：<span class="sendPreviewSjrEmail">hr@500d.me</span></p>
+			</div>
+			<div class="sendPreviewContent">
+				<p>
+					五百丁招聘官，你好！
+					我是应聘贵公司产品岗的求职者张三，
+					我曾经主导过一个具有百万用户级别的产品策划，
+					我有信心为贵公司产品带来一个质的提升，希望能有机会面谈。
+					下面的链接是我的简历，请打开查看我的详细资料，
+					非常感谢。
+				</p>
+				<a href="http://www.500d.me/resume/1978045783/" id="sendpreviewvisitid" target="_blank">http://www.500d.me/resume/1978045783/</a>
+			</div>
+
+				
+			
+			<div class="form-btn"><a class="bj tdbjBtn">返回编辑</a></div>
+		</div>
+	</div>
+</div>
+<!--简历投递成功-->
+<div class="modal fade tdResumeTips" id="tdResumeTips" >
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<h1>投递成功</h1>
+			<p>敬请留意网站消息中心，如果HR查看了你的简历，<br />我们将以站内信的方式告知你</p>
+		</div>
+	</div>
+</div>
+<script>
+$(function(){
+	//邮件投递
+	$("#resumeMailingBtn").click(function(){
+		var send_data ={} // 发送邮件的信息
+		//检测简历是否已保存
+		var resumemailing_resumeId=$("#resumemailing_resumeId").val();
+		if(resumemailing_resumeId==null||resumemailing_resumeId==""){
+			var reumeId=$("#hidden_data_resume_id").val();
+			if(reumeId==null||reumeId==""){
+				layer.msg("请先保存~");
+				return;
+			}else{
+				$("#resumemailing_resumeId").val(reumeId);
+			}
+		}
+		var sendeeName=$('input[name="sendeeName"]').val();	
+		if(sendeeName==null||sendeeName==""){
+			layer.msg("发件人必填~");
+			return;
+		}
+		var email_reg=/\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14}/;
+		
+		var replyMail=$('input[name="replyMail"]').val();	
+		if(replyMail==null||replyMail==""){
+			layer.msg("发件人地址必填~");
+			return;
+		}
+		if(!email_reg.test(replyMail)){
+			layer.msg("发件人地址不合法~");
+			return;
+		}
+		
+		var sendeeEmail=$('input[name="sendeeEmail"]').val();	
+		
+		if(sendeeEmail==null||sendeeEmail==""){
+			layer.msg("收件人地址必填~");
+			return;
+		}
+		if(!email_reg.test(sendeeEmail)){
+			layer.msg("收件人地址不合法~");
+			return;
+		}
+		var emailTitle=$('input[name="emailTitle"]').val();
+		if(emailTitle==null||emailTitle==""){
+			layer.msg("邮件主题必填~");
+			return;
+		}
+		var emailContent=$('#emailContent').html();
+		if(emailContent==null||emailContent==""){
+			layer.msg("发送内容必填~");
+			return;
+		}	
+		//$('textarea[name="emailContent"]').html(emailContent);
+		//$("#resumeMailingFrom").submit();
+
+		send_data["resumemailing_resumeId"]=$("#resumemailing_resumeId").val();
+		send_data["sendeeName"]=sendeeName;
+		send_data["replyMail"]=replyMail;
+		send_data["sendeeEmail"]=sendeeEmail;
+		send_data["emailTitle"]=emailTitle;
+		send_data["emailContent"]=emailContent;
+
+		$.ajax({
+			url:$("#resumeMailingFrom").attr("action"),
+			type:"POST",
+			data:send_data,
+			dataType:"json",
+			success: function(message){
+			  //alert(message);
+	      	  if(message.type=="success"){
+	      	  		$('#tdResumeModal').modal('hide');
+					$('#tdResumeTips').modal('show');
+	      	  }else{
+	      	  		layer.msg(message.content);
+	      	  }
+	      	}
+	      });
+	});
+	$(".tdResumeBtn").click(function(){
+		$('#tdResumeModal').modal('show');
+	});
+	$(".tdylBtn").click(function(){
+		$('#tdResumeModal').modal('hide');
+		//把内容转移到预览页里
+		$("#sendpreviewvisitid").text("http://www.500d.me/resume/"+$("#visitid").val()+"/");
+		var sendeeName=$('input[name="sendeeName"]').val();
+		if(sendeeName==null||sendeeName==""){
+			sendeeName="张三"
+		}
+		var replyMail=$('input[name="replyMail"]').val();	
+		
+		if(replyMail==null||replyMail==""){
+			replyMail="dingding@500d.me";
+		}
+		
+		$(".sendPreviewFjr").text(sendeeName+"<"+replyMail+">");
+		
+		var sendeeEmail=$('input[name="sendeeEmail"]').val();
+		if(sendeeEmail==null||sendeeEmail==""){
+			sendeeEmail="hr@500d.me";
+		}
+		$(".sendPreviewSjrEmail").text(sendeeEmail);
+		
+		var emailTitle=$('input[name="emailTitle"]').val();
+		if(emailTitle==null||emailTitle==""){
+			emailTitle="应聘产品策划-张三-5年工作经验";
+		}
+		$(".sendPreviewTitle").text(emailTitle);
+		
+		
+		$(".sendPreviewContent p").html($('#emailContent').html());
+		$('#tdylResumeModal').modal('show');
+	});	
+	$(".tdbjBtn").click(function(){
+		$('#tdResumeModal').modal('show');
+		$('#tdylResumeModal').modal('hide'); 
+	});	
+});
+</script>	
+	<div class="cr-container edit_containt" style="left:0px;">
+				<div class="no_edit_background"></div>
+				<div class="cr-itemList " id="resume_body" >
+					<div class="connectSortable">
+					
+				
+				
+				
+				
+				
+				
+			<div class="itemList resume_modul_delete_area resume_add_area ui-draggable" data_id="info0003">
+        <div class="row cr-item cr-info-0003" resume_add_msg="">
+        	
+            <div class="col-md-12">
+            	<div class="msgDiv resume_append_area">
+            		<div class="add resume_add" for-key="resume_msg"></div>
+	            	<div class="baseMsg resume_delete_area"><div class="delete resume_delete"></div><a class="wbdfont resume_icon_diy"></a><div class="conedit" contenteditable="true"><font color="#000000">年龄：22岁</font></div></div>
+	            	<div class="baseMsg resume_delete_area"><div class="delete resume_delete"></div><a class="wbdfont resume_icon_diy "></a><div class="conedit" contenteditable="true"><font color="#000000">邮箱：543183567@qq.com</font></div></div>
+	            	<div class="baseMsg resume_delete_area"><div class="delete resume_delete"></div><a class="wbdfont resume_icon_diy "></a><div class="conedit" contenteditable="true"><font color="#000000">技术博客：www.yongneng.net.cn/wordpress</font></div></div>
+	            	<div class="baseMsg resume_delete_area"><div class="delete resume_delete"></div><a class="wbdfont resume_icon_diy"></a><div class="conedit" contenteditable="true"><font color="#000000">电话：18312751173</font></div></div>
+            	<div class="baseMsg resume_delete_area"><div class="delete resume_delete"></div><a class="wbdfont resume_icon_diy"></a><div class="conedit" contenteditable="true"><font color="#000000">地址：广东省广州市</font></div></div></div>
+            </div>			        	
+        	<div class="col-md-12">
+        			<p class="line-green"></p>
+        			<div class="ld">
+        				<div class="headimg upload_image_list upload_image_preview" style="width: 128px; height: 128px;"><img src="http://wubaiding.bj.bcebos.com/upload/image/201704/27/162678dc-4b25-4a6f-a546-cc3f66092aaf.png" width="128" height="128"></div>
+        			</div>
+        			<div class="rd">
+        				<div class="conedit name" contenteditable="true">徐永能</div>
+        				<div class="conedit job" contenteditable="true"><b><font size="4">求职目标：前端开发工程师</font></b></div>
+        				<div class="conedit text" contenteditable="true"><div>熟悉产品开发流程，能够独立开发前后端服务，技术栈偏向前端，拥有1年多的前端开发经验，正在寻找一个比较好的发展平台，希望能够充分发挥自己的专业优势。<br></div><br></div>
+        			</div>			        			
+        	</div>
+            
+        </div>
+   </div><div class="itemList resume_modul_delete_area resume_add_area ui-draggable" data_id="cart0001">
+        <div class="row cr-item cr-cart-0001" resume_add_msg="">
+            <dl>
+             <dt>
+                <div class="col-md-12"><div class="title"><a class="wbdfont resume_icon_diy"></a><div class="conedit" contenteditable="true">专业技能</div></div></div>
+              </dt>
+              <dd>
+                <div class="col-md-12">
+                	<div class="bd">
+                		<div class="conedit l" contenteditable="true">
+    						<font size="3"><b><font color="#3ebf62">●</font></b>&nbsp;<font color="#000000">熟悉javascript闭包、作用域、原型继承和面向对象编程</font></font><font size="3"><font color="#8d634a">&nbsp; &nbsp; &nbsp; &nbsp;</font><br>
+    						<b></b><font color="#3ebf62">●</font></font><font size="3" color="#8d634a"> </font><font size="3" color="#000000">熟</font><font size="3" color="#000000">悉</font><font size="3" color="#000000">restful架构，能够使用ajax获取后台json数据</font><font size="3"><br><font color="#3ebf62">
+    						●</font></font><font size="3" color="#8d634a"> </font><font size="3" color="#000000">熟悉html5和css3新特性，如canvas、vedio、audio等</font><font size="3" color="#8d634a"> &nbsp;&nbsp;</font><div><font size="3" color="#3ebf62"><b>●</b></font><font size="3"> <font color="#000000">能够使用node.js+express开发后台服务</font>&nbsp; &nbsp;&nbsp;</font></div></div>
+    					<div class="conedit r" contenteditable="true">
+    						<font size="3"><span><font color="#3ebf62">●</font></span>&nbsp;<font color="#000000">能灵活运用媒体查询实现页面的响应式布局</font><br>	
+    						<span><font color="#3ebf62">●</font></span>&nbsp;<font color="#000000">能够使用vue 2 进行spa应用开发</font><br>	
+    						<span><font color="#3ebf62">●</font></span>&nbsp;<font color="#000000">掌握es6的promise方法进行异步编程</font></font><div><font size="3"><font color="#3ebf62">●</font><font color="#000000">&nbsp;熟悉mysql数据库，掌握sql语句</font></font><br></div></div>
+                	</div>
+                </div>
+              </dd>
+             </dl>
+            
+        </div>
+    </div>		
+		<div class="itemList resume_modul_delete_area resume_add_area ui-draggable" data_id="exper0004">
+	    <div class="row cr-item cr-exper-0004" resume_add_msg="resume_item">
+	        <dl>
+	         <dt>
+	            <div class="col-md-12"><div class="title"><a class="wbdfont resume_icon_diy "></a><div class="conedit" contenteditable="true">项目经验</div></div></div>
+	         </dt>
+	         <dd class="resume_append_area">
+	            <div class="resume_item_items resume_delete_area">
+	                <div class="delete resume_delete"></div>	
+	                <div class="col-md-12">
+	                    <div class="hd">
+	                        <span class="time"><div class="conedit" contenteditable="true">2017/05—2017/06</div></span>
+	                        <span class="school"><div class="conedit" contenteditable="true"><font size="3">基于node.js的博客系统（毕业设计）</font></div></span>
+	                        <span class="post"><div class="conedit" contenteditable="true"></div></span>
+	                    </div>
+	                </div>
+	                <div class="col-md-12">
+	                    <div class="bd">
+	                        <div class="conedit" contenteditable="true"><font size="3" color="#000000"><b>1.项目描述</b>：这是一个博客类网站，用户注册登录后可以发表文章和评论，管理员可以管理用户、文章、评论、分类目录和文件上传等。</font><div><font size="3" color="#000000"><b>2.开发工具</b>：sublime text 3 ,workbench ,chrome浏览器，ubuntu系统。</font></div><div><font size="3" color="#000000"><b>3.使用技术</b>：利用node.js+express+mysql搭建web后台服务器，页面由服务器端渲染，前端UI框架采用基于bootstrap的Flat框架。</font></div><div><font size="3" color="#000000"><b>4.项目收获</b>：a.能够独立制作整个网站包括前后端。</font></div><div><font size="3" color="#000000">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; b.掌握数据库增删查改语句。</font></div><div><font size="3" color="#000000">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; c.掌握前后台数据交互方式，对前后端分离开发有深刻理解。</font></div><div><font size="3" color="#000000">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; d.掌握node.js的异步编程。</font></div><div><font size="3" color="#000000"><b>5.项目网址</b>：http://www.yongneng.net.cn:443<br></font></div></div>		                        
+	                    </div>
+	                </div>
+	            </div>
+	            <div class="resume_item_items resume_delete_area">
+	                <div class="delete resume_delete"></div>	
+	                <div class="col-md-12">
+	                    <div class="hd">
+	                        <span class="time"><div class="conedit" contenteditable="true">2017/03—2017/04</div></span>
+	                        <span class="school"><div class="conedit" contenteditable="true"><font size="3">&nbsp;前端知识大挑战项目（个人项目）</font></div></span>
+	                        <span class="post"><div class="conedit" contenteditable="true"></div></span>
+	                    </div>
+	                </div>
+	                <div class="col-md-12">
+	                    <div class="bd">
+	                        <div class="conedit" contenteditable="true"><font size="3" color="#000000"><b>
+							1、项目描述</b>：这是一个综合了几乎大部分前端基础知识的项目，里面包含了许多小demo，如css3实现的正方体，旋转木马，无缝滚动，蒙版效果，瀑布流无限下拉加载，animate动画，小球碰撞，贪吃蛇和用canvas实现的画图工具等。<br><b>
+							2、开发工具</b>：sublime text 3 ，chrome浏览器。</font><div><font color="#000000" size="3"><b>3、使用技术</b>：html5、css3、javascript、sass。<br></font><div><font size="3" color="#000000"><b>4、项目收获</b>：a.极大地加强了css3的知识和javascript编程能力。</font></div><div><font size="3" color="#000000">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; b.对javascript的闭包、作用域和模块化有一定的理解。</font></div><div><font size="3" color="#000000">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; c.能够根据个人兴趣用javascript和canvas实现一些小游戏。</font></div><div><font size="3" color="#000000"><b>5、项目网址</b>：http://www.yongneng.net.cn/myProject/frontendText</font></div></div></div>		                        
+	                    </div>
+	                </div>
+	            </div>
+	            
+	         <div class="resume_item_items resume_delete_area">					<div class="delete resume_delete"></div>                    <div class="col-md-12">                        <div class="hd">                            <span class="time"><div class="conedit" contenteditable="true">2017/02—2017/03</div></span>                            <span class="school"><div class="conedit" contenteditable="true"><font size="3">掘金官网</font></div></span>                            <span class="post"><div class="conedit" contenteditable="true"></div></span>                        </div>                    </div>                    <div class="col-md-12">                        <div class="bd">                            <div class="conedit" contenteditable="true"><font size="3" color="#000000"><b>1、项目描述</b>：这是一个模仿掘金官网的spa单页面项目，是一个专注分享高质量技术文章的社区。</font><div><font size="3" color="#000000"><b>2、开发工具</b>：sublime text 3 ，chrome浏览器。</font></div><div><font size="3" color="#000000"><b>3、使用技术</b>：html5、css3、javascript、jquery、ajax、json、sass 。</font></div><div><font size="3" color="#000000"><b>4、项目收获</b>：a.掌握前端利用前端路由hash技术实现分页。</font></div><div><font size="3" color="#000000">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; b.能灵活运用ajax技术获取后台接口提供的json格式的数据。</font></div><div><font size="3" color="#000000">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; c.掌握javascript面向对象编程。</font></div><div><font size="3" color="#000000">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; d.掌握下拉懒加载数据。</font></div><div><span style="color: rgb(0, 0, 0); font-size: medium;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; e.灵活运用媒体查询实现响应式布局。</span></div></div>                        </div>                    </div>                </div>  <div class="resume_item_items resume_delete_area">					<div class="delete resume_delete"></div>                    <div class="col-md-12">                        <div class="hd">                            <span class="time"><div class="conedit" contenteditable="true">2016/09—2016/10</div></span>                            <span class="school"><div class="conedit" contenteditable="true"><font size="3">邦聚微信解决方案网站</font></div></span>                            <span class="post"><div class="conedit" contenteditable="true"></div></span>                        </div>                    </div>                    <div class="col-md-12">                        <div class="bd">                            <div class="conedit" contenteditable="true"><font size="3" color="#000000"><b>1、项目描述</b>：这关于一家公司的微信解决方案的网站。</font><div><font size="3" color="#000000"><b>2、开发工具</b>：sublime text 3 ，chrome浏览器。&nbsp;</font></div><div><font size="3" color="#000000"><b>3、使用技术</b>：html5、css3、javascript、jquery。&nbsp;</font></div><div><font size="3" color="#000000"><b>4、项目收获</b>：a.能够灵活使用div+css布局，还原页面的设计稿。</font></div><div><font size="3" color="#000000">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; b.能够独立设计页面的动画效果，使网站具有良好的动效，并因此得到产品经理的赞许。</font></div><div><font size="3" color="#000000">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; c.熟练运用css3的animate属性开发页面动画。</font></div><div><font color="#000000" size="3"><b>5、项目网址</b>：http://www.yongneng.net.cn/myProject/pc/weixin/</font><span style="color: rgb(0, 0, 0); font-size: medium;">&nbsp;&nbsp;</span></div><div><span style="color: rgb(0, 0, 0); font-size: medium;"><br></span></div><div><span style="color: rgb(0, 0, 0); font-size: medium;"><br></span></div></div>                        </div>                    </div>                </div></dd>
+	         </dl>
+			 
+	    </div>
+	</div><div class="itemList resume_modul_delete_area resume_add_area ui-draggable" data_id="exper0004" style="display: block;">
+	    <div class="row cr-item cr-exper-0004" resume_add_msg="resume_item">
+	        <dl>
+	         <dt>
+	            <div class="col-md-12"><div class="title"><a class="wbdfont resume_icon_diy"></a><div class="conedit" contenteditable="true">实习经历</div></div></div>
+	         </dt>
+	         <dd class="resume_append_area">
+	            <div class="resume_item_items resume_delete_area">
+	                <div class="delete resume_delete"></div>	
+	                <div class="col-md-12">
+	                    <div class="hd">
+	                        <span class="time"><div class="conedit" contenteditable="true">2017/02—2017/04</div></span>
+	                        <span class="school"><div class="conedit" contenteditable="true"><font size="3">广州博看文思科技有限公司</font></div></span>
+	                        <span class="post"><div class="conedit" contenteditable="true"><font size="3">HTML5开发实习生</font></div></span>
+	                    </div>
+	                </div>
+	                <div class="col-md-12">
+	                    <div class="bd">
+	                        <div class="conedit" contenteditable="true"><font color="#000000" size="3">
+	                			1、配合UI设计师（网站美工），根据网页视觉样式图以及交互设计实完成网站前端开发 。<br>
+	                			2、原生javascript开发。<br>
+	                			3、html5+css3开发。<br>
+	                			4、ajax+json进行前后端交互。<br></font></div>		                        
+	                    </div>
+	                </div>
+	            </div>
+	            <div class="resume_item_items resume_delete_area">
+	                <div class="delete resume_delete"></div>	
+	                <div class="col-md-12">
+	                    <div class="hd">
+	                        <span class="time"><div class="conedit" contenteditable="true">2016/07—2016/09</div></span>
+	                        <span class="school"><div class="conedit" contenteditable="true"><font size="3">广州邦聚网络技术有限公司</font></div></span>
+	                        <span class="post"><div class="conedit" contenteditable="true"><font size="3">web前端实习生</font></div></span>
+	                    </div>
+	                </div>
+	                <div class="col-md-12">
+	                    <div class="bd">
+	                        <div class="conedit" contenteditable="true"><font color="#000000" size="3">
+							1、负责对UI设计师的设计稿使用前端技术进行视觉还原 。<br>
+							2、根据网站需求，独立设计网站的动画交互效果 。</font><div><font color="#000000" size="3">3、与UI设计师、产品经理、php后台程序员沟通并统一网站的效果 。</font></div></div>		                        
+	                    </div>
+	                </div>
+	            </div>
+	            
+	           </dd>
+	         </dl>
+			 
+	    </div>
+	</div><div class="itemList resume_modul_delete_area resume_add_area ui-draggable" data_id="exper0003" style="display: block;">
+	    <div class="row cr-item cr-exper-0003" resume_add_msg="resume_item">
+	        <dl>
+	         <dt>
+	            <div class="col-md-12"><div class="title"><a class="wbdfont resume_icon_diy"></a><div class="conedit" contenteditable="true">教育背景</div></div></div>
+	         </dt>
+	         <dd class="resume_append_area">
+	            <div class="resume_item_items resume_delete_area">
+	                <div class="delete resume_delete"></div>	
+	                <div class="col-md-12">
+	                    <div class="hd">
+	                        <span class="time"><div class="conedit" contenteditable="true">2013/09—2017/07</div></span>
+	                        <span class="school"><div class="conedit" contenteditable="true"><font size="3">                广东海洋大学</font></div></span>
+	                        <span class="post"><div class="conedit" contenteditable="true"><font size="3">计算机科学与技术</font></div></span>
+	                    </div>
+	                </div>
+	                <div class="col-md-12">
+	                    <div class="bd">
+	                        <div class="conedit" contenteditable="true"><font size="3"><font color="#8d634a">●</font> <font color="#000000"><b>主修课程</b></font>：<font color="#000000">c++,数据库原理及应用，数据结构，计算机网络，Java程序设计与开发 ,操作系统，软件工程，大型数据库，移动编程（Android），web开发技术，网络工程，图形图像处理，数学建模 &nbsp;&nbsp;</font><br>
+	                			<font color="#8d634a">●</font> <font color="#000000"><b>个人研究方向</b></font>： <font color="#000000">HTML5</font><font color="#000000">前端开发</font></font><br></div>		                        
+	                    </div>
+	                </div>
+	            </div>
+	        </dd>
+	         </dl>
+			 
+	    </div>
+	</div><div class="itemList resume_modul_delete_area resume_add_area ui-draggable" data_id="exper0003">
+	    <div class="row cr-item cr-exper-0003" resume_add_msg="resume_item">
+	        <dl>
+	         <dt>
+	            <div class="col-md-12"><div class="title"><a class="wbdfont resume_icon_diy"></a><div class="conedit" contenteditable="true">在校实践经历</div></div></div>
+	         </dt>
+	         <dd class="resume_append_area">
+	            <div class="resume_item_items resume_delete_area">
+	                <div class="delete resume_delete"></div>	
+	                <div class="col-md-12">
+	                    <div class="hd">
+	                        <span class="time"><div class="conedit" contenteditable="true">2015/06—2016/09</div></span>
+	                        <span class="school"><div class="conedit" contenteditable="true"><font size="3">广东海洋大学教育发展中心</font></div></span>
+	                        <span class="post"><div class="conedit" contenteditable="true"><font size="3">网维工作</font></div></span>
+	                    </div>
+	                </div>
+	                <div class="col-md-12">
+	                    <div class="bd">
+	                        <div class="conedit" contenteditable="true">
+	                			<font size="3"><span></span><font color="#000000"><b>1、工作内容</b>：a.负责整理老师给的资料上传到学校官网</font></font><div><font color="#000000" size="3">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; b.根据老师的需求调整学校官网的模块<br></font><div><font size="3"><font color="#000000"><b>2、收获</b>：使我对网站模块的功能和后台数据的上传发布流程有清楚的认知，一定程度上加强了我对网站维护和开发的经验</font></font></div></div></div>		                        
+	                    </div>
+	                </div>
+	            </div>
+	         <div class="resume_item_items resume_delete_area">					<div class="delete resume_delete"></div>                    <div class="col-md-12">                        <div class="hd">                            <span class="time"><div class="conedit" contenteditable="true">2015/09—2017/07</div></span>                            <span class="school"><div class="conedit" contenteditable="true"><font size="3">广东海洋大学 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</font></div></span>                            <span class="post"><div class="conedit" contenteditable="true"><font size="3">学习委员</font></div></span>                        </div>                    </div>                    <div class="col-md-12">                        <div class="bd">                            <div class="conedit" contenteditable="true"><font size="3" color="#000000"><b>1、工作内容</b>：a.协助课堂老师的教学任务</font><div><font color="#000000" size="3">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; b.负责老师对学生信息的传递</font></div><div><font color="#000000" size="3">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; c.协助班长职务<br></font><div><font size="3" color="#000000"><b>2、收获</b>：锻炼了我管理能力，加强我和同学们的交流沟通，拓展了人脉资源</font></div></div></div>                        </div>                    </div>                </div></dd>
+	         </dl>
+			 
+	    </div>
+	</div><div class="itemList resume_modul_delete_area resume_add_area ui-draggable" data_id="cart0001">
+        <div class="row cr-item cr-cart-0001" resume_add_msg="">
+            <dl>
+             <dt>
+                <div class="col-md-12"><div class="title"><a class="wbdfont resume_icon_diy "></a><div class="conedit" contenteditable="true">技能证书</div></div></div>
+              </dt>
+              <dd>
+                <div class="col-md-12">
+                	<div class="bd">
+                		<div class="conedit l" contenteditable="true">
+    						<span>●</span> <font color="#000000">英语CET-4证书</font><br><br></div>
+    					<div class="conedit r" contenteditable="true"></div>
+                	</div>
+                </div>
+              </dd>
+             </dl>
+            
+        </div>
+    </div>
+		
+		
+		
+		
+		
+		
+					</div>
+				</div>
+	</div>
+	<!--
+	<div class="resumePageBreak" style="top: 1556px;"><span>该处分页请回车OR换行避开</span></div>
+	<div class="resumePageBreak" style="top: 3112px;"><span>该处分页请回车OR换行避开</span></div>
+	-->
+	<div class="zx-yl-bottom"></div>
+	<!--vip-->
+<!--vip 包含了关闭窗口，支付功能，只有支付完成按钮的事件没有写，导入此页面记得需要重写支付完成按钮的事件-->
+<div class="zx-vip-modal" style="display:none" id="zx-vip-modal">
+	<span class="closeBtn" id="closeBtn"></span>
+	<div class="innerr">
+		<div class="hd" style="display:none"><span></span>HI，亲爱的五百丁用户，<i id="vip_auth_tips">【下载简历】</i> 需要<span id="vip_rank_tips"></span>会员权限，请升级您的账户</div>
+		<div class="vip-con clearfix">
+			<div class="vip-title">
+				<div class="csr">
+					<img src="http://static.500d.me/resources/500d/images/boos1.jpg" width="100" height="100"/>
+					<p class="name">渐离蜀黍</p>
+					<p class="job">创始人</p>
+					<p>感谢选择五百丁，如果您在使用过程中遇到了问题，<br/>请记得通过在线客服或话题区跟我们联系，<br/>我们一定竭诚为您服务</p>
+				</div>
+				<span class="title">会员有效期</span>
+				<span class="title">PDF文件下载</span>
+				<span class="title">简历下载次数</span>
+				<span class="title">创建简历最大数量</span>
+				<span class="title">个性域名设置</span>
+				<span class="title">自由简历</span>
+				<span class="title">网页简历</span>
+				<span class="title">手机简历</span>
+				<span class="title" style="display:none"><i></i>简历打印套餐<div class="tips">
+					<span class="tips-con-tri"></span>
+					<div class="tips-con"><h4>套餐包含以下内容</h4>铜版纸简历*5张<br/>求职专用文件袋*1个<br/>随身记事本*1份<br/>面试记录卡*1张<br/>商务宝珠笔（1支）<br/><a href="/print/">更多详情></a><p>下单成功后联系客服赠送</p></div>
+				</div>
+				</span>
+			</div>
+			<div class="vip-main">
+				<div class="vip-main-hd">
+					<h3>基础会员</h3>
+					<p class="price"><i>￥</i>9.9</p>
+					<p>即日起一个月内有效</p>
+					<a class="a-button payBtn" href="javaScript:;" p_id="1118">升级</a>
+				</div>
+				<span class="day">30天</span>
+				<span><i class="gou"></i></span>
+				<span>不限</span>
+				<span>10份</span>
+				<span><i class="gou"></i></span>
+				<span><i class="gou"></i></span>
+				<span><i class="cha"></i></span>
+				<span><i class="cha"></i></span>
+				<span style="display:none"><i class="cha"></i></span>
+			</div>
+			<div class="vip-main">
+				<div class="vip-main-hd">
+					<h3>进阶会员</h3>
+					<p class="price"><i>￥</i>19.9</p>
+					<p>即日起一年内有效</p>
+					<a class="a-button payBtn" href="javaScript:;" p_id="1119">升级</a>
+				</div>
+				<span class="day">365天</span>
+				<span><i class="gou"></i></span>
+				<span>不限</span>
+				<span>50份</span>
+				<span><i class="gou"></i></span>
+				<span><i class="gou"></i></span>
+				<span><i class="gou"></i></span>
+				<span><i class="gou"></i></span>
+				<span style="display:none"><i class="cha"></i></span>
+			</div>
+			<div class="vip-main">
+				<div class="vip-main-hd">
+					<h3>超级会员</h3>
+					<p class="price"><i>￥</i>29.9</p>
+					<p>即日起终身有效</p>
+					<a class="a-button payBtn" href="javaScript:;" p_id="1120">升级</a>
+				</div>
+				<span class="day">永久</span>
+				<span><i class="gou"></i></span>
+				<span>不限</span>
+				<span>100份</span>
+				<span><i class="gou"></i></span>
+				<span><i class="gou"></i></span>
+				<span><i class="gou"></i></span>
+				<span><i class="gou"></i></span>
+				<span style="display:none"><i class="gou"></i></span>
+			</div>
+		</div>
+		<div class="bd clearfix">
+			<h1>常见问题</h1>
+			<ul>
+				<li><div class="inner"><h3>为什么购买了会员后无法下载word模板？</h3><p>会员资格仅限在线制作使用，如果想下载word模板，需另行单独购买。</p></div></li>
+				<li><div class="inner"><h3>在线制作导出PDF后能不能继续修改？</h3><p>可以继续修改，不过需在线完成，导出PDF后是无法修改的，</p></div></li>				
+				<li><div class="inner"><h3>想更换会员类型怎么办？</h3><p>找在线客服帮您操作。</p></div></li>				
+					
+				
+			</ul>
+		</div>
+	</div>
+</div>
+<!--提示框-->	
+<!--支付方式提示框-->
+<div class="modal fade payModal" id="payModal" >
+	<div class="modal-dialog" id="payMethod">
+		<div class="modal-content clearfix">
+			<div class="title"><h2>请选择支付方式</h2><span></span></div>
+			<div class="pbtn">
+				<a class="wx payType" pay_id="weixin" href="javaScript:;">微信支付</a>
+				<a class="zfb payType" href="javaScript:;" pay_id="alipay">支付宝</a>
+			</div>
+		</div>
+	</div>
+	<div class="modal-tips" style="display: none;" id="pay_tips">
+		<h2>请在你新打开的页面上完成付款</h2>
+		<p>支付完成后，请根据您支付的情况点击下面按钮。</p>
+		<div class="pbtn"><a class="yes" href="javaScript:;" id="yesBtn">支付完成</a><a class="no" href="http://help.500d.me" target="blank">支付遇到问题</a></div>
+	</div>		
+</div>
+<form id="suborderform" action="/member/order/create/" method="post" target="_blank" novalidate="novalidate">
+    <input type="hidden"  name="productid" id="productid" value="">
+    <input type="hidden"  name="paytype" id="paytype" value="">
+</form>
+<!--简历新建提示框   -->
+<div class="modal fade sjvipModal" id="sjvipModal">
+	<div class="modal-dialog">
+		<p class="waptips" style="display:none">主公，<i>基础会员</i>没有创建手机简历权限，请升级进阶会员创建。</p>
+		<p class="webtips"  style="display:none">主公，<i>基础会员</i>没有创建网页简历权限，请升级进阶会员创建。</p>
+		<p class="over_10"  style="display:none">主公，<i>基础会员</i>简历创建最大数量已超过10份，请升级继续创建。</p>
+		<p class="over_50"  style="display:none">主公，<i>进阶会员</i>简历创建最大数量已超过50份，请升级继续创建。</p>
+		<p class="over_100"  style="display:none">主公，<i>高级会员</i>简历创建最大数量已超过100份，</p>
+		<p class="vipexpire" style="display:none">主公，你的<i>基础会员</i>的使用权限已到期，请升级继续创建。</p>
+		<p class="over_3"  style="display:none">主公，您免费创建<i>3份简历</i>机会已使用完，请升级会员继续创建。</p>
+		<div class="button"><a class="sj" href="/order/vip_member/" target="_blank">升级会员</a><a data-dismiss="modal" aria-hidden="true">取消</a></div>
+	</div>
+</div>	
+<script type="text/javascript">
+$(function(){	
+	$(".vipItem .choose span.xz").click(function(){
+		if($(this).hasClass("m")){//月
+			$("li.month_li").hide();
+			$("li.year_li").show();
+		}else{
+			$("li.month_li").show();
+			$("li.year_li").hide();
+		}		
+	});
+	//关闭按钮
+	$("#closeBtn").click(function(){
+		$("div.zx-vip-modal").hide();
+		$("html").removeClass("open")
+	});
+	//支付按钮
+	$("a.payBtn").click(function(){
+		//检车是否登录
+		if(!$.checkLogin()) {
+			show_login_modal();
+			return;
+		}
+		var $this=$(this);
+		var pid=$this.attr("p_id");
+		if(pid==null||pid==""){
+			layer.msg('获取不到对应的购买信息，请保存简历后刷新重试');
+			return;
+		}else{
+			$("#productid").val(pid);
+			$("#pay_tips").hide();
+			$("#payMethod").show();
+			$('#payModal').modal('show');
+		}
+	});
+	//支付方式
+	$("a.payType").click(function(){
+		var payid=$(this).attr("pay_id");
+		if(payid==null||payid==""){
+			layer.msg('获取不到对应的支付信息，请保存简历后刷新重试');
+			return;
+		}else{
+			$("#paytype").val(payid);
+		}
+		$("#suborderform").submit();
+		$("#pay_tips").show();
+		$("#payMethod").hide();
+	});
+});
+</script>	<!--点赞-->
+	<script type="text/javascript">
+	(function ($) {
+		$.extend({
+			tipsBox: function (options) {
+				options = $.extend({
+					obj: null,  //jq对象，要在那个html标签上显示
+					str: "+1",  //字符串，要显示的内容;也可以传一段html，如: "<b style='font-family:Microsoft YaHei;'>+1</b>"
+					startSize: "12px",  //动画开始的文字大小
+					endSize: "30px",    //动画结束的文字大小
+					interval: 600,  //动画时间间隔
+					color: "#e4be0f",    //文字颜色
+					callback: function () { }    //回调函数
+				}, options);
+				$("body").append("<span class='num'>" + options.str + "</span>");
+				var box = $(".num");
+				var left = options.obj.offset().left + options.obj.width() / 2;
+				var top = options.obj.offset().top - options.obj.height();
+				box.css({
+					"position": "absolute",
+					"left": left + "px",
+					"top": top + "px",
+					"z-index": 9999,
+					"font-size": options.startSize,
+					"line-height": options.endSize,
+					"color": options.color
+				});
+				box.animate({
+					"font-size": options.endSize,
+					"opacity": "0",
+					"top": top - parseInt(options.endSize) + "px"
+				}, options.interval, function () {
+					box.remove();
+					options.callback();		
+				});
+			}
+		});
+	})(jQuery);
+	  
+	function niceIn(prop){
+		prop.find('i').addClass('niceIn');
+		setTimeout(function(){
+			prop.find('i').removeClass('niceIn');	
+		},1000);		
+	}
+	$(function () {
+		var mid=2002735;
+		var LIKE_NAME = "resumeLikes";
+		if(likeResume(mid)){
+			$("#dz").addClass("checked");
+		}
+		$("#dz").one('click',function(){	
+			if(!likeResume(mid)){
+				$.tipsBox({
+					obj: $(this),
+					str: "+1",
+					callback: function () {
+						$.get("/resume/likenum/?id=" + mid, function(likenum) {
+							$("#dz").find('span').text(likenum);	
+							$("#dz").addClass("checked")
+							addLikeResume(mid);
+						});
+					}
+				});
+			}	
+		});
+		// 判断是否点击过喜欢
+		function likeResume(id) {
+			if(localStorage) {
+				var ids = localStorage.getItem(LIKE_NAME);
+				if(ids && ids.indexOf("," + id + ",") >= 0)
+					return true;
+				return false;
+			}
+			return false;
+		}
+		function addLikeResume(id) {
+			if(localStorage) {
+				var ids = localStorage.getItem(LIKE_NAME);
+				if(ids)
+					ids = ids + id + ",";
+				else
+					ids = "," + id + ",";
+				localStorage.setItem(LIKE_NAME, ids);
+			}
+		}
+	});
+</script>
+</body>
+<script type="text/javascript">
+$(function(){
+	//简历类型转换
+	$(".change_resume_type_btn").click(function(){
+		//提示
+		$("#changeModal").modal("show");
+		$("#cofr_change_Btn").one("click",function(){
+			$("#changeModal").modal("hide");
+			$(".zx-loading").show();
+			location.href="/editresume/createnew/?resumeId=2002735&resumeType=wap";
+		});
+	});	
+	//pdf下载
+	$("#pdfdownload").click(function(){
+		//判断浏览的用户和简历用户是否是同一个用户
+			$("#zx-vip-modal").show();
+			$("#vip_rank_tips").closest("div.hd").show();
+	});
+	//复制功能
+	$('#copyBtn').zclip({ 
+	      path: 'http://static.500d.me/resources/500d/js/zclip/ZeroClipboard.swf', 
+	      copy: function(){//复制内容 
+	           return $(this).siblings("span").text(); 
+	      }, 
+	      afterCopy: function(){//复制成功 
+	          layer.msg("复制成功"); 
+	     } 
+	});
+	//支付成功
+	$("#yesBtn").click(function(){
+		location.reload();
+	});
+    $(".tdBtn").click(function(){
+		$('#tdResumeModal').modal('show');
+ 	});		
+ 	$(".setdBtn").click(function(){
+ 		$('#setResumeModal').modal('show');
+ 	});
+ 	//个性域名
+	$("#resumeUrl").click(function(){
+		//判断个性域名是否有提交
+		chcekVisitid();
+	});
+	//非VIP时个性域名提示
+	$(".vip_visitid_tips").mouseover(function(){
+		layer.msg("修改个性域名需会员资格");
+	});
+	//生成个人简历
+	$("#privarySumBtn").click(function(){
+		var visitid = $("#visitid").val();
+		//判断个性域名是否有提交
+		var checkFlag=chcekVisitid();
+		if(checkFlag!=null && checkFlag==false){
+			return false;
+		}
+		var visitType = $("input[name=visitType]:checked").val();
+		if(!visitType || visitType == "") {
+			layer.msg("请选择隐私设置类型！");
+			return false;
+		}
+		var title=$("#webresumeTitle").val();
+		console.log(title);
+		if(title==null||title==""){
+			layer.msg("请填写简历名称！");
+			return false;
+		}
+		//设置简历信息保密程度
+		$.post("/editresume/webresume/submit/", {"id":2002735, "visitType":visitType,"title":title}, function(message) {
+			if(message.type == "error" || message.type == "warn"){
+				layer.msg(message.content);
+			}else{
+				location.href="/resume/"+visitid+"/";
+			}
+		});
+	});
+	function chcekVisitid(){
+		var resumeId = 2002735;
+		var visitid = $("#visitid").val();
+		var visitidRegex = /^[0-9a-z]{4,20}$/;
+		if(!visitid || !visitidRegex.test(visitid)) {
+			layer.msg("请填写4-20位的英文字母或数字的地址");
+			return false;
+		}
+		var flag=true;
+		$.ajax({ 
+			url: "/resume/visitid/submit/?v=" + Math.random(), 
+			async:false,
+			data:{"id":resumeId, "visitid":visitid},
+			dataType:"json",
+			success: function(message){
+	        	if(message.type == "error"){
+					layer.msg(message.content);
+					flag=false;
+				}else{	
+					layer.msg("设置成功");
+					flag= true;
+				}
+	   		}
+	    });
+	    return flag;
+	}
+	
+})
+</script>
+<script>
+	$(function(){
+		/**
+		 * 格式化：分页位置，多页控制最后一页高度
+		 * 注：导出的JS
+		 */
+		var resumePageHeight = 0;
+		var pageHeight=1556;
+		var resumePageBreak = '<div class="resumePageBreak_v4"><span>该处分页请回车OR换行避开</span></div>';
+		var nowPageSize=1;
+		function resumePageBreakFormat() {
+			var resumeBody = $("#resume_body");
+			var resumeHeight = resumeBody.height();
+			var pageSize = Math.ceil(resumeHeight / pageHeight);//对一个数进行上舍入;大于等于 x，并且与它最接近的整数。获取到页大小
+			if(pageSize != nowPageSize) {
+				nowPageSize = pageSize;
+				var nowResumeHeight = pageSize * pageHeight;
+				resumeBody.css({"height" : nowResumeHeight + "px"});
+				for(var index = 1; index < pageSize; index++) {
+					if(index!=pageSize){
+						var pageBreakObj = $(resumePageBreak);
+						pageBreakObj.css({"top" : ((index * pageHeight)-20) + "px"});//打印分页符的位置
+						resumeBody.append(pageBreakObj);
+					}
+				}
+			}
+		}
+		resumePageBreakFormat();
+	});
+</script>
+</html>
